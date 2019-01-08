@@ -1,10 +1,10 @@
 # N-Tier nodel - Nodejs App
 ***
 ### First request:
-!(picture)[first request.png]
+![picture](first request.png)
 ***
 ### After First request:
-!(picture)[requests.png]
+![picture](requests.png)
 ***
 
 # Statistics for Trivia game
