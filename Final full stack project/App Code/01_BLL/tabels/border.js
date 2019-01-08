@@ -4,22 +4,22 @@ const {DbHandler} = {...require('./../dbHandler')};
 class Border{
 
     static createTable(){
-         return dal.runQuery(`create table Border(
-            Id int AUTO_INCREMENT PRIMARY KEY,
-            CountryId int NOT NULL,
-            BorderCountryId int NOT NULL,
-            FOREIGN KEY (CountryId) REFERENCES Countries(Id),
-            FOREIGN KEY (BorderCountryId) REFERENCES Countries(Id)
-            )`
+         return dal.runQuery(`create table Borders(
+                                Id                              int AUTO_INCREMENT PRIMARY KEY,
+                                CountryId                       int NOT NULL,
+                                BorderCountryId                 int NOT NULL,
+                                FOREIGN KEY (CountryId)         REFERENCES Countries(Id),
+                                FOREIGN KEY (BorderCountryId)   REFERENCES Countries(Id)
+                                );`
         );
     }
 
     static dropTable(){
-        return dal.runQuery('drop table if exists Border');
+        return dal.runQuery('drop table if exists Borders;');
     }
 
     static async insertTable() {
-        return dal.runQueryWithParam("INSERT INTO Border (CountryId,BorderCountryId) VALUES ?", await Border.getValues());
+        return dal.runQueryWithParam("INSERT INTO Borders (CountryId,BorderCountryId) VALUES ?", await Border.getValues());
     }
 
     static async getValues() {

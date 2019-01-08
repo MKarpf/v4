@@ -4,18 +4,18 @@ class LanguagePerCountry {
 
     static createTable() {
         return dal.runQuery(`create table LanguagePerCountry(
-            Id int AUTO_INCREMENT PRIMARY KEY,
-            LanguageId int NOT NULL,
-            CountryId int NOT NULL,
-            FOREIGN KEY (LanguageId) REFERENCES Languages(Id),
-            FOREIGN KEY (CountryId) REFERENCES Countries(Id)
-            )`
+                                Id                  int AUTO_INCREMENT PRIMARY KEY,
+                                LanguageId          int NOT NULL,
+                                CountryId           int NOT NULL,
+                                FOREIGN KEY         (LanguageId) REFERENCES Languages(Id),
+                                FOREIGN KEY         (CountryId) REFERENCES Countries(Id)
+                                );`
         );
         
     }
 
     static dropTable() {
-        return dal.runQuery('drop table if exists LanguagePerCountry');
+        return dal.runQuery('drop table if exists LanguagePerCountry;');
     }
 
     static async insertTable() {

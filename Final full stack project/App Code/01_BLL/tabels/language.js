@@ -5,14 +5,14 @@ class Language {
 
     static createTable() {
         return dal.runQuery(`create table Languages(
-            Id int AUTO_INCREMENT PRIMARY KEY,
-            LanguageName nvarchar(30) NOT NULL
-            )`
+                                Id              int AUTO_INCREMENT PRIMARY KEY,
+                                LanguageName    nvarchar(30) NOT NULL
+                                );`
         );
     }
 
     static dropTable() {
-        return dal.runQuery('drop table if exists Languages');
+        return dal.runQuery('drop table if exists Languages;');
     }
 
     static insertTable() {

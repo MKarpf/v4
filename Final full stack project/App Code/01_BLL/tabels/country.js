@@ -9,25 +9,25 @@ class Country {
     static createTable() {
         return dal.runQuery(`
             create table Countries(
-                Id int AUTO_INCREMENT PRIMARY KEY,
-                CountryName nvarchar(100) NOT NULL,
-                Alpha2Code nvarchar(2) NOT NULL,
-                Alpha3Code nvarchar(3) NOT NULL,
-                CallingCode nvarchar(10) NOT NULL,
-                Capital nvarchar(100) NOT NULL,
-                Region nvarchar(100) NOT NULL,
-                Subregion nvarchar(30) NOT NULL,
-                CountryPopulation int NOT NULL,
-                Lat decimal NULL,
-                Lng decimal NULL,
-                Area decimal NULL,
-                Flag nvarchar(500) NOT NULL
-            )`
+                Id                  int AUTO_INCREMENT PRIMARY KEY,
+                CountryName         nvarchar(100) NOT NULL,
+                Alpha2Code          nvarchar(2) NOT NULL,
+                Alpha3Code          nvarchar(3) NOT NULL,
+                CallingCode         nvarchar(10) NOT NULL,
+                Capital             nvarchar(100) NOT NULL,
+                Region              nvarchar(100) NOT NULL,
+                Subregion           nvarchar(30) NOT NULL,
+                CountryPopulation   int NOT NULL,
+                Lat                 decimal NULL,
+                Lng                 decimal NULL,
+                Area                decimal NULL,
+                Flag                nvarchar(500) NOT NULL
+            );`
         );
     }
 
     static dropTable() {
-        return dal.runQuery('drop table if exists Countries');
+        return dal.runQuery('drop table if exists Countries;');
     }
 
     static async insertTable() {

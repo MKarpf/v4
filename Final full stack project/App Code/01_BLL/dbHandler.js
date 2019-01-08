@@ -7,16 +7,18 @@ const { Currency } = { ...require('./tabels/currency') };
 const { CurrencyPerCountry } = { ...require('./tabels/currencyPerCountry') };
 const { Language } = { ...require('./tabels/language') };
 const { LanguagePerCountry } = { ...require('./tabels/languagePerCountry') };
-
+const { QueryStatistic } = { ...require('./tabels/queryStatistic') };
+const { QueryPerUser } = { ...require('./tabels/queryPerUser') };
+const { User } = { ...require('./tabels/user') };
 
 class DbHandler {
 
-    static async getTableCols(tableName){
-        let res= await dal.runQuery(`SELECT COLUMN_NAME 
+    static async getTableCols(tableName) {
+        let res = await dal.runQuery(`SELECT COLUMN_NAME 
                              FROM INFORMATION_SCHEMA.COLUMNS 
-                             WHERE table_name = '${tableName}' AND table_schema = 'game';`); 
+                             WHERE table_name = '${tableName}' AND table_schema = 'game';`);
 
-        return dal.extractDbResult(res).map(e=>e.COLUMN_NAME);  
+        return dal.extractDbResult(res).map(e => e.COLUMN_NAME);
     }
 
     static createDatabase() {
@@ -38,7 +40,10 @@ class DbHandler {
             Country.createTable(),
             LanguagePerCountry.createTable(),
             CurrencyPerCountry.createTable(),
-            Border.createTable()
+            Border.createTable(),
+            User.createTable(),
+            QueryStatistic.createTable(),
+            QueryPerUser.createTable()
         ]);
 
     }
@@ -54,7 +59,10 @@ class DbHandler {
                         Country.dropTable(),
                         LanguagePerCountry.dropTable(),
                         CurrencyPerCountry.dropTable(),
-                        Border.dropTable()
+                        Border.dropTable(),
+                        User.dropTable(),
+                        QueryStatistic.dropTable(),
+                        QueryPerUser.dropTable()
                     ])
             )
             .then(() => dal.runQuery('SET FOREIGN_KEY_CHECKS = 1'))

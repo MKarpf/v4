@@ -4,10 +4,10 @@ class Currency {
     static createTable() {
 
         return dal.runQuery(`create table Currencies(
-            Id int AUTO_INCREMENT PRIMARY KEY,
-            CurrencyName nvarchar(30) NOT NULL,
-            Symbol nvarchar(5) NOT NULL
-            )`);
+                                Id              int AUTO_INCREMENT PRIMARY KEY,
+                                CurrencyName    nvarchar(30) NOT NULL,
+                                Symbol          nvarchar(5) NOT NULL
+                                )`);
     }
 
     static dropTable() {

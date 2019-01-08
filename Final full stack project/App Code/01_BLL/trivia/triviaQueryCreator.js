@@ -1,6 +1,6 @@
-const dal = require('./../00_DAL/index');
-const { Country } = { ...require('./tabels/country') };
-const { DbHandler } = { ...require('./dbHandler') };
+const dal = require('./../../00_DAL/index');
+const { Country } = { ...require('./../tabels/country') };
+const { DbHandler } = { ...require('./../dbHandler') };
 
 class TriviaQueryCreator {
 
@@ -12,7 +12,7 @@ class TriviaQueryCreator {
         return arr;
     }
 
-    static async triviaQuery(subject) {
+    static async generateTriviaQuery(subject) {
         let randomIdList = TriviaQueryCreator.randomCountriesId();
 
         let countryTableCol = await DbHandler.getTableCols("Countries");
