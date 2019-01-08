@@ -1,5 +1,10 @@
 
-# Statistics for Trivia game
+# Todo list
+## User auth
+* craete a auth filter
+* finish `user` controller
+
+## Statistics for Trivia game
 * Every Trivia query that is sent to the user contains:
 ```
 queryId              - int
@@ -23,29 +28,6 @@ for example:
 }
 
 ```
-* Create "queryStatistics"  DB table with this columns:
-```
-id                   - auto-increment
-subject              - string
-query                - string
-optionA              - string
-optionB              - string
-optionC              - string
-optionD              - string
-optionCorrect        - string
-sumOfAnswers         - int
-sumOfRightAnswers    - int
-```
-
-* Create "queryToUser" DB table with this columns:
-```
-id                   - auto-increment
-queryId              - int
-userId               - int
-isCorrect            - bit
-```
-
-
 ***
 
 * Before we create a new query - the code checks in the DB if we have a query in the chosen subject,
