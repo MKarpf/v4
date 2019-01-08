@@ -7,136 +7,65 @@
 !(picture)[requests.png]
 ***
 
-
-# Creatung the project
-* Create a new folder named `App Code`
-* Init this folder as a npm app
+# Statistics for Trivia game
+* Every Trivia query that is sent to the user contains:
 ```
-npm init
+queryId              - int
+query                - string
+optionA              - string
+optionB              - string
+optionC              - string
+optionD              - string
+optionCorrect        - string
 ```
-* Add to this app the following npm packages:
-```
-npm i -s express  body-parser  mysql
-```
-* Create the following sql script, to use it later from the js code:
-```sql
--- Create `rental_db` db
-CREATE DATABASE `rental_db`;
-USE `rental_db`;
-
--- Create `vehicles` table
-DROP TABLE IF EXISTS `vehicles`;
-CREATE TABLE `vehicles` (
-   `veh_reg_no`  VARCHAR(8)    NOT NULL,
-   `category`    ENUM('car', 'truck')  NOT NULL DEFAULT 'car', `brand`       VARCHAR(30)   NOT NULL DEFAULT '',
-   `desc`        VARCHAR(256)  NOT NULL DEFAULT '',
-   `daily_rate`  DECIMAL(6,2)  NOT NULL DEFAULT 9999.99,
-   PRIMARY KEY (`veh_reg_no`),
-);
- 
--- Inserting test records
-INSERT INTO 'vehicles' VALUES
-   ('SBA1111A', 'car', 'NISSAN SUNNY 1.6L', '4 Door Saloon, Automatic', 99.99),
-   ('SBB2222B', 'car', 'TOYOTA ALTIS 1.6L', '4 Door Saloon, Automatic', 99.99),
-   ('SBC3333C', 'car', 'HONDA CIVIC 1.8L',  '4 Door Saloon, Automatic', 119.99),
-   ('GA5555E', 'truck', 'NISSAN CABSTAR 3.0L',  'Lorry, Manual ', 89.99),
-   ('GA6666F', 'truck', 'OPEL COMBO 1.6L',  'Van, Manual', 69.99);
-
-
--- Reading records
-SELECT * FROM `vehicles`;
-```
-
-* Add to the `App Code` folder, the following sub-folders:
-```
-00_DAL
-01_BLL
-02_UIL
-```
-
-* Add to `00_DAL`, a file named `index.js`, that contains all the generic DDL + DML operations:
-```javascript
-const mySql = require('mysql');
-
-//-----------------------CONNECT---------------------
-
-let connectionConfig = {
-    "host": "localhost",
-    "user": "root"
-};
-
-// this is a global var - so we can use it in all the functions in this file
-let connection;
-
-function connect() {
-    try {
-        //here we asiggn to the global var - the open connection that we created
-        connection = mySql.createConnection(connectionConfig);
-
-        return true;
-    }
-    catch (e) {
-        return false;
-    }
+for example:
+```json
+{
+    "queryId":2,
+    "query":"what is the Capital of Bermuda: ",
+    "a":"Hamilton",
+    "b":"Phnom Penh",
+    "c":"Tripoli",
+    "d":"Asunción",
+    "correct":"Hamilton"
 }
 
+```
+* Create "queryStatistics"  DB table with this columns:
+```
+id                   - auto-increment
+subject              - string
+query                - string
+optionA              - string
+optionB              - string
+optionC              - string
+optionD              - string
+optionCorrect        - string
+sumOfAnswers         - int
+sumOfRightAnswers    - int
+```
 
-//-----------------------DDL-------------------------
-function createDB(dbName, successCallBack, failCallBack) {
-
-    if (connection) {
-        connect()
-    }
-
-    connection.query(`CREATE DATABASE ${dbName};`,
-        (err, res) => {
-            if (err) {
-                failCallBack(err)
-            }
-            else {
-                successCallBack(res);
-                connectionConfig.database = dbName;
-                connect();
-            }
-        });
-
-    ;
-}
-
-//-----------------------DML-------------------------
-function runQuery(queryParam, successCallBack, failCallBack) {
-
-    if (connection) {
-        connect()
-    }
-
-    connection.query(queryParam,
-        (err, res, extraParam) => {
-            if (err) {
-                failCallBack(err)
-            }
-            else {
-                successCallBack(res, extraParam);
-            }
-        });
-
-    ;
-}
-
-
-module.exports = {
-    "connect": connect,
-    "createDB": createDB,
-    "runQuery": runQuery
-}
+* Create "queryToUser" DB table with this columns:
+```
+id                   - auto-increment
+queryId              - int
+userId               - int
+isCorrect            - bit
 ```
 
 
-* Add to `01_BLL`, a file named `index.js`, that contains all the logic operations (and uses the DAL):
-```javascript
-```
+***
 
+* Before we create a new query - the code checks in the DB if we have a query in the chosen subject,
+that the user has not answered before:   
+    - If we have a query - we will send this query to the user
+    - If we do not have a query - we will create a new query, and save it in the DB "queryStatistics"
+        - When we create a new query - we will check in the DB if we have allready a same query - if yes - we will create a new query
 
-* Add to `02_UIL`, a file named `controller.js`, that contains the express server (and uses the BLL):
-```javascript
-```
+***
+
+* When the user returns an answer to the query:
+    - we will add to "queryToUser" a new record with the matching data
+    - we will edit in "queryStatistics" the matching record:
+        - increment by 1 the "sumOfAnswers"
+        - if the user answered right - increment by 1 the "sumOfRightAnswers"
