@@ -16,7 +16,7 @@ class TriviaQueryCreator {
         let randomIdList = TriviaQueryCreator.randomCountriesId();
 
         let countryTableCol = await DbHandler.getTableCols("Countries");
-        let CurrencyTableCol = await DbHandler.getTableCols("Countries");
+        let CurrencyTableCol = await DbHandler.getTableCols("Currencies");
         let languagesTableCol = await DbHandler.getTableCols("Languages");
 
         let sqlQuery;
@@ -41,7 +41,12 @@ class TriviaQueryCreator {
                         WHERE LanguagePerCountry.CountryId IN (${randomIdList.join(",")})`;
         }
         else if (subject == "Borders") {
-            sqlQuery = "";
+            sqlQuery =  `SELECT c1.CountryName  ,c2.CountryName,  borders.BorderCountryId , borders.CountryId
+                         FROM countries as c1 join countries as c2 join borders 
+                         ON borders.CountryId=c1.Id
+                         AND borders.BorderCountryId=c2.Id
+                         WHERE borders.CountryId IN (${randomIdList.join(",")})`;
+
             /*
             Borders:
             -----------------
